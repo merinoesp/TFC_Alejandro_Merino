@@ -1,4 +1,11 @@
-<?php session_start(); ?>
+<?php
+session_start();
+require_once __DIR__ . '/src/Model/Database.php';
+$_db_index = null;
+if (isset($_SESSION['id'])) {
+    $_db_index = new Database('sql210.infinityfree.com','if0_41267709','acakoj56J','if0_41267709_car2iu',3306);
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -57,9 +64,11 @@
                         <a href="/anuncios" class="button button-primary button-lg">
                             Ver anuncios
                         </a>
+                        <?php if (!$_db_index || !$_db_index->verificarAdmin($_SESSION['id'])): ?>
                         <a href="/crearAnuncio" class="button button-outline button-lg">
                             Subir vehículo
                         </a>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
             </div>

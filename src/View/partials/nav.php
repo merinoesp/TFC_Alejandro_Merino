@@ -1,7 +1,7 @@
 <header>
     <?php if (session_status() === PHP_SESSION_NONE) session_start(); 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Model/Database.php';
-    $db = new Database("localhost","root", "", "car2iu",3306);
+    $db = new Database("sql210.infinityfree.com","if0_41267709", "acakoj56J", "if0_41267709_car2iu", 3306);
     
     ?>
 
@@ -29,8 +29,6 @@
             <a href="/anuncios">Anuncios</a>
             <a href="/src/Model/IA/index.php">IA</a>
             <a href="/panelAdmin">Panel de Administrador</a>
-            <a href="/crearAnuncio"><button class="button button-primary">Subir +</button></a>
-            
         </div>';
             }else{
                 echo '<div class="list-elements">

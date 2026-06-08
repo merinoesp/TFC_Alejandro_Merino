@@ -12,7 +12,7 @@
     <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Model/Database.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/src/View/partials/nav.php';
-    $db = new Database('localhost', 'root', '', 'car2iu', 3306);
+    $db = new Database('sql210.infinityfree.com', 'if0_41267709', 'acakoj56J', 'if0_41267709_car2iu', 3306);
     ?>
 
     <main class="main-user">
@@ -22,9 +22,18 @@
                 <form action="/src/Controller/userPanelController.php" method="POST" class="form-group" enctype="multipart/form-data">
                     <input type="hidden" name="formulario" value="avatar">
                     <p>Cambio de Avatar</p>
-                <img src="/<?php echo ltrim($_SESSION['avatar'], './'); ?>" alt="avatar">
-                <input type="file" name="avatar" id="avatar">
-                <button id="avatar" class="button button-secondary" name="enviar">Cambiar Avatar</button>
+                <?php if (isset($_GET['avatar'])): ?>
+                    <?php if ($_GET['avatar'] === 'ok'): ?>
+                        <p style="color:green;">&#10003; Avatar actualizado correctamente.</p>
+                    <?php elseif ($_GET['avatar'] === 'tipo'): ?>
+                        <p style="color:red;">&#10007; Formato no permitido. Usa JPG, PNG, WEBP o GIF.</p>
+                    <?php elseif ($_GET['avatar'] === 'error'): ?>
+                        <p style="color:red;">&#10007; No se pudo guardar el archivo. Inténtalo de nuevo.</p>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <img src="/<?php echo ltrim($_SESSION['avatar'], './'); ?>" alt="avatar" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">
+                <input type="file" name="avatar" id="avatar" accept="image/jpeg,image/png,image/webp,image/gif">
+                <button class="button button-secondary" name="enviar">Cambiar Avatar</button>
                   
             </form>
             </div>

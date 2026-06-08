@@ -10,7 +10,7 @@
     <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/src/View/partials/nav.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Model/Database.php';
-    $db = new Database('localhost', 'root', '', 'car2iu', 3306);
+    $db = new Database('sql210.infinityfree.com', 'if0_41267709', 'acakoj56J', 'if0_41267709_car2iu', 3306);
     ?>
     <main class="main-anuncios">
         <h1>Mis Anuncios</h1>

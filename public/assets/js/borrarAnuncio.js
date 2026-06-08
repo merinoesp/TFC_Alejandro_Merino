@@ -66,7 +66,7 @@ function eliminarAnuncio(idAnuncio) {
     formData.append('formulario', 'eliminarAnuncio');
     formData.append('idAnuncio', idAnuncio);
 
-    fetch('../../src/Controller/userPanelController.php', {
+    fetch('/src/Controller/userPanelController.php', {
         method: 'POST',
         body: formData
     })
@@ -99,7 +99,7 @@ function marcarVendido(idAnuncio) {
     formData.append('formulario', 'marcarVendido');
     formData.append('idAnuncio', idAnuncio);
 
-    fetch('../../src/Controller/userPanelController.php', {
+    fetch('/src/Controller/userPanelController.php', {
         method: 'POST',
         body: formData
     })

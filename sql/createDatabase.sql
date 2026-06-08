@@ -1,169 +1,97 @@
--- phpMyAdmin SQL Dump
--- version 4.9.0.1
--- https://www.phpmyadmin.net/
---
--- Servidor: sql210.infinityfree.com
--- Tiempo de generación: 08-06-2026 a las 09:36:40
--- Versión del servidor: 11.4.12-MariaDB
--- Versión de PHP: 7.2.22
+-- ============================================================
+-- Base de datos: if0_41267709_car2iu
+-- Adaptada al código PHP del proyecto (Database.php)
+-- ============================================================
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
+SET NAMES utf8mb4;
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de datos: `if0_41267709_car2iu`
---
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `anuncios`
---
-
-CREATE TABLE `anuncios` (
-  `id_anuncio` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `titulo` varchar(150) NOT NULL,
-  `marca` varchar(100) NOT NULL,
-  `descripcion` text DEFAULT NULL,
-  `kilometraje` int(11) NOT NULL DEFAULT 0,
-  `anio` int(11) NOT NULL,
-  `precio` decimal(10,2) NOT NULL,
-  `ruta` varchar(255) DEFAULT NULL,
-  `fecha_publicacion` datetime DEFAULT current_timestamp(),
-  `vendido` tinyint(1) NOT NULL DEFAULT 0,
-  `ubicacion` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `anuncios`
---
-
-INSERT INTO `anuncios` (`id_anuncio`, `id_usuario`, `titulo`, `marca`, `descripcion`, `kilometraje`, `anio`, `precio`, `ruta`, `fecha_publicacion`, `vendido`, `ubicacion`) VALUES
-(29, 8, 'Seat Ibiza 6L', 'Seat', 'Seat ibiza muy bueno', 240000, 2006, '2000.00', 'uploads/anuncios/anuncio_6a1c44904ee996.20312302.png', '2026-05-31 07:24:15', 0, 'San Lorenzo de El Escorial');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `reportes`
---
-
-CREATE TABLE `reportes` (
-  `id_reporte` int(11) NOT NULL,
-  `id_anuncio` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `motivo` varchar(150) NOT NULL,
-  `descripcion` text DEFAULT NULL,
-  `fecha_reporte` datetime DEFAULT current_timestamp(),
-  `estado` enum('pendiente','leido') DEFAULT 'pendiente'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `reportes`
---
-
-INSERT INTO `reportes` (`id_reporte`, `id_anuncio`, `id_usuario`, `motivo`, `descripcion`, `fecha_reporte`, `estado`) VALUES
-(2, 29, 10, 'Reporte de usuario', 'FOTO INADECUADA', '2026-06-08 06:24:16', 'leido');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuarios`
---
-
+-- ============================================================
+-- Tabla: usuarios
+-- ============================================================
 CREATE TABLE `usuarios` (
-  `id_usuario` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `email` varchar(150) NOT NULL,
-  `contraseña` varchar(255) NOT NULL,
-  `telefono` varchar(20) DEFAULT NULL,
-  `fecha_registro` datetime DEFAULT current_timestamp(),
-  `es_admin` tinyint(1) NOT NULL DEFAULT 0,
-  `avatar_ruta` varchar(255) DEFAULT 'uploads/avatars/default.png'
+  `id_usuario`      INT(11)       NOT NULL AUTO_INCREMENT,
+  `nombre`          VARCHAR(100)  NOT NULL,
+  `email`           VARCHAR(150)  NOT NULL,
+  `contraseña`      VARCHAR(255)  NOT NULL,
+  `telefono`        VARCHAR(20)   DEFAULT NULL,
+  `fecha_registro`  DATETIME      DEFAULT CURRENT_TIMESTAMP,
+  `es_admin`        TINYINT(1)    NOT NULL DEFAULT 0,
+  `avatar_ruta`     VARCHAR(255)  DEFAULT 'uploads/avatars/default.png',
+  PRIMARY KEY (`id_usuario`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `usuarios`
---
+-- Datos de usuarios
+-- Contraseña del admin: Admin1234! (bcrypt)
+INSERT INTO `usuarios`
+  (`id_usuario`, `nombre`, `email`, `contraseña`, `telefono`, `fecha_registro`, `es_admin`, `avatar_ruta`)
+VALUES
+  (1,  'Carlos',       'merinoalex2003@gmail.com',  '$2y$10$EbhwjiasEgHeH0RpWIcFM.5igDtRqecemzUatmi5XY.tayYraE96S', '691293628', '2026-03-17 08:52:40', 0, 'uploads/avatars/gti.webp'),
+  (2,  'JoseLuis',     'neshoxhdxd@gmail.com',       '$2y$10$2/p6D3vtKyzPaqA/YS8WWeK44v5dBtPmp.Gp5kvqHRmed4VsV7z.a', '685902856', '2026-03-18 12:02:01', 0, 'uploads/avatars/OIP.webp'),
+  (3,  'merinoesp',    'merino@gmail.com',            '$2y$10$jY4Qs1VQFRqMUIBlLyCG2en3OrzSt.Pc8fwliKkUKLW6pYhWQ4MVK', '652977315', '2026-03-18 16:47:20', 0, 'uploads/avatars/prueba.png'),
+  (4,  'Sammy',        'sammy@gmail.com',             '$2y$10$HN7ce.X80aMFxQz79yeGg.sHoTt5GKSlTH3j0sHxS3E54BKE26nbS', '666253809', '2026-03-25 03:45:07', 0, 'uploads/avatars/default.png'),
+  (5,  'Soreia Reith', 'sori.rth@gmail.com',          '$2y$10$8rYgiGaaLLTm.tVGg6Y2kuHiR84XS5.h9vD0E5JK4aBNRZ.Ir3Cie', '650605555', '2026-03-25 04:54:00', 0, 'uploads/avatars/IMG_20260318_233636_134.webp'),
+  (6,  'Jose Mesa',    'josemesa@educa.madrid.org',   '$2y$10$TimIFf0/0Bsp7bfSWVwYte9bIJ4u9BnT/368KhVSYyujfZF.zYGZG', '548632145', '2026-03-25 09:13:49', 0, 'uploads/avatars/default.png'),
+  (7,  'Alejandro',    'admin@hotmail.com',           '$2y$10$XoIgZ9OHWusVeQ2uJOdrPusv98WolBRJhp1kjBms4SwN4teeWag9C', '666253809', '2026-04-08 10:13:10', 0, 'uploads/avatars/default.png'),
+  -- CUENTA ADMIN — contraseña: Admin1234!
+  (8,  'Admin',        'admin@car2iu.com',            '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', NULL,        '2026-05-21 00:00:00', 1, 'uploads/avatars/default.png');
 
-INSERT INTO `usuarios` (`id_usuario`, `nombre`, `email`, `contraseña`, `telefono`, `fecha_registro`, `es_admin`, `avatar_ruta`) VALUES
-(8, 'Merino', 'merinoalex2003@gmail.com', '$2y$10$J8jBeMgDP8wI/Hz485oRhu5gN1wpIi7OnWx13ot7RYisTynVbfmC.', '691293628', '2026-05-21 02:04:13', 0, 'uploads/avatars/default.png'),
-(10, 'Admin', 'admin@car2iu.com', '$2y$10$rO3RgacoLw5BJU3t/asjoeC3uQjLShYtn4ymXohRZbyzH8sDe1xl2', '685902856', '2026-05-21 03:30:41', 1, 'uploads/avatars/default.png');
+-- ============================================================
+-- Tabla: anuncios
+-- ============================================================
+CREATE TABLE `anuncios` (
+  `id_anuncio`        INT(11)         NOT NULL AUTO_INCREMENT,
+  `id_usuario`        INT(11)         NOT NULL,
+  `titulo`            VARCHAR(150)    NOT NULL,
+  `marca`             VARCHAR(100)    NOT NULL,
+  `descripcion`       TEXT            DEFAULT NULL,
+  `kilometraje`       INT(11)         NOT NULL DEFAULT 0,
+  `anio`              INT(11)         NOT NULL,
+  `precio`            DECIMAL(10,2)   NOT NULL,
+  `ruta`              VARCHAR(255)    DEFAULT NULL,
+  `fecha_publicacion` DATETIME        DEFAULT CURRENT_TIMESTAMP,
+  `vendido`           TINYINT(1)      NOT NULL DEFAULT 0,
+  `ubicacion`         VARCHAR(255)    DEFAULT NULL,
+  PRIMARY KEY (`id_anuncio`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `anuncios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Índices para tablas volcadas
---
+INSERT INTO `anuncios`
+  (`id_anuncio`, `id_usuario`, `titulo`, `marca`, `descripcion`, `kilometraje`, `anio`, `precio`, `ruta`, `fecha_publicacion`, `vendido`, `ubicacion`)
+VALUES
+  (26, 1, 'VW Golf GTI 7', 'Volkswagen',
+   'Coche en perfecto estado, muy cuidado y en estado casi de colección, en 10 años se le han hecho 120mil km, perfecto para alguien que no haga muchos, mantenimientos al dia',
+   120876, 2016, '14.90', 'uploads/anuncios/anuncio_69d67adb8c5955.53944714.webp', '2026-04-08 08:57:16', 0, 'Lugo'),
+  (27, 1, 'POLO GTI', 'Volkswagen',
+   'bdjdjskskwjsilddkkdkskxkkdkskskdjjejejdjdj',
+   150000, 2003, '2300.00', 'uploads/anuncios/anuncio_69da173c9739b5.57563943.jpg', '2026-04-11 02:41:16', 0, 'Madrid');
 
---
--- Indices de la tabla `anuncios`
---
-ALTER TABLE `anuncios`
-  ADD PRIMARY KEY (`id_anuncio`),
-  ADD KEY `id_usuario` (`id_usuario`);
+-- ============================================================
+-- Tabla: reportes
+-- ============================================================
+CREATE TABLE `reportes` (
+  `id_reporte`    INT(11)      NOT NULL AUTO_INCREMENT,
+  `id_anuncio`    INT(11)      NOT NULL,
+  `id_usuario`    INT(11)      NOT NULL,
+  `motivo`        VARCHAR(150) NOT NULL,
+  `descripcion`   TEXT         DEFAULT NULL,
+  `fecha_reporte` DATETIME     DEFAULT CURRENT_TIMESTAMP,
+  `estado`        ENUM('pendiente','leido') DEFAULT 'pendiente',
+  PRIMARY KEY (`id_reporte`),
+  KEY `id_anuncio` (`id_anuncio`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `reportes_ibfk_1` FOREIGN KEY (`id_anuncio`) REFERENCES `anuncios` (`id_anuncio`) ON DELETE CASCADE,
+  CONSTRAINT `reportes_ibfk_2` FOREIGN KEY (`id_usuario`)  REFERENCES `usuarios`  (`id_usuario`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Indices de la tabla `reportes`
---
-ALTER TABLE `reportes`
-  ADD PRIMARY KEY (`id_reporte`),
-  ADD KEY `id_anuncio` (`id_anuncio`),
-  ADD KEY `id_usuario` (`id_usuario`);
+-- AUTO_INCREMENT
+ALTER TABLE `usuarios`  MODIFY `id_usuario`  INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+ALTER TABLE `anuncios`  MODIFY `id_anuncio`  INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+ALTER TABLE `reportes`  MODIFY `id_reporte`  INT(11) NOT NULL AUTO_INCREMENT;
 
---
--- Indices de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id_usuario`),
-  ADD UNIQUE KEY `email` (`email`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `anuncios`
---
-ALTER TABLE `anuncios`
-  MODIFY `id_anuncio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
-
---
--- AUTO_INCREMENT de la tabla `reportes`
---
-ALTER TABLE `reportes`
-  MODIFY `id_reporte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `anuncios`
---
-ALTER TABLE `anuncios`
-  ADD CONSTRAINT `anuncios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `reportes`
---
-ALTER TABLE `reportes`
-  ADD CONSTRAINT `reportes_ibfk_1` FOREIGN KEY (`id_anuncio`) REFERENCES `anuncios` (`id_anuncio`) ON DELETE CASCADE,
-  ADD CONSTRAINT `reportes_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -11,10 +11,10 @@ class Database
     private $port;
 
  public function __construct(
-    $host = 'localhost',
-    $username = 'root',
-    $password = '',
-    $dbName = 'car2iu',
+    $host = 'sql210.infinityfree.com',
+    $username = 'if0_41267709',
+    $password = 'acakoj56J',
+    $dbName = 'if0_41267709_car2iu',
     $port = 3306
 ) {
     $this->host = $host;
@@ -260,6 +260,29 @@ public function dbConnect()
     } else {
         return false;
     }
+}
+
+public function listarAnunciosPaginados(int $offset = 0, int $limit = 9): array
+{
+    $conn = $this->dbConnect();
+    $sql  = "SELECT anuncios.*, usuarios.nombre
+             FROM anuncios
+             LEFT JOIN usuarios ON anuncios.id_usuario = usuarios.id_usuario
+             ORDER BY anuncios.id_anuncio DESC
+             LIMIT ? OFFSET ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ii', $limit, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+public function contarAnuncios(): int
+{
+    $conn = $this->dbConnect();
+    $result = $conn->query("SELECT COUNT(*) AS total FROM anuncios");
+    $row = $result->fetch_assoc();
+    return (int)($row['total'] ?? 0);
 }
    
     public function listarAnunciosUsuario()

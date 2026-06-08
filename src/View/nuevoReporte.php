@@ -4,15 +4,33 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/public/assets/css/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo Reporte</title>
+    <title>Nuevo Reporte — Car2iu</title>
 </head>
 <body>
-  <?php 
+  <?php
   require_once $_SERVER['DOCUMENT_ROOT'] . '/src/View/partials/nav.php';
-  $id         = $_GET['id'] ?? null;
+
+  // Debe estar logueado para reportar
+  if (!isset($_SESSION['id'])) {
+      header('Location: /login');
+      exit();
+  }
+
+  $id         = (int)($_GET['id'] ?? 0);
+  $id_usuario = (int)($_GET['id_usuario'] ?? 0);
   $nombre     = $_GET['nombre'] ?? '';
   $titulo     = $_GET['titulo'] ?? '';
-  $id_usuario = $_GET['id_usuario'] ?? null;
+
+  // No puedes reportar tu propio anuncio
+  if ($id_usuario === (int)$_SESSION['id']) {
+      header('Location: /anuncio?id=' . $id . '&error=autoreporte');
+      exit();
+  }
+
+  if ($id === 0 || $id_usuario === 0) {
+      header('Location: /anuncios');
+      exit();
+  }
   ?>
 
   <main class="main-reportes">
@@ -20,21 +38,26 @@
         <h1>Nuevo Reporte</h1>
     </section>
     <section class="rep-section">
+
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'vacio'): ?>
+            <p style="color:red;">El motivo del reporte no puede estar vacío.</p>
+        <?php endif; ?>
+
         <form action="/src/Controller/ControladorReporte.php" method="POST" class="form-group">
 
             <input type="hidden" name="id_anuncio"  value="<?php echo $id; ?>">
             <input type="hidden" name="id_usuario"  value="<?php echo $id_usuario; ?>">
-            <input type="hidden" name="nombre"      value="<?php echo htmlspecialchars($nombre); ?>">
-            <input type="hidden" name="titulo"      value="<?php echo htmlspecialchars($titulo); ?>">
 
-            <h3>Reportar: <?php echo htmlspecialchars($nombre); ?></h3>
-            <p>Anuncio: <?php echo htmlspecialchars($titulo); ?></p>
+            <h3>Reportar anuncio de: <?php echo htmlspecialchars($nombre); ?></h3>
+            <p>Anuncio: <strong><?php echo htmlspecialchars($titulo); ?></strong></p>
             <label for="rep">Motivo del reporte:</label>
-            <textarea name="rep" id="rep"></textarea>
+            <textarea name="rep" id="rep" placeholder="Describe el motivo del reporte..." required></textarea>
             <br>
-            <button type="submit" class="button button-primary">Enviar Reporte</button>
+            <button type="submit" class="button button-danger">Enviar Reporte</button>
+            <a href="/anuncio?id=<?php echo $id; ?>"><button type="button" class="button button-secondary">Cancelar</button></a>
         </form>
     </section>
   </main>
+  <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/src/View/partials/footer.php'; ?>
 </body>
 </html>

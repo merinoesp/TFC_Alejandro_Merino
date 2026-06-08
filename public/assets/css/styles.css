@@ -1519,8 +1519,53 @@ button:active, .button:active, .btn:active { transform: translateY(0); }
     background: #f5f5f5;
 }
 
-.dropdown:hover .dropdown-menu {
+.dropdown-menu.open {
     display: block;
+}
+
+/* Modal Contactar */
+.modal-contactar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-contactar-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.modal-contactar-box h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #2c3e50;
+}
+
+.email-display {
+    background: #f4f6f8;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    word-break: break-all;
+    margin-bottom: 1.25rem;
+}
+
+.modal-contactar-btns {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
 }
 
 
@@ -1575,4 +1620,163 @@ button:active, .button:active, .btn:active { transform: translateY(0); }
 @media (max-width: 400px) {
     .hero__visual-card { padding: 24px 18px 20px; }
     .hero__title { font-size: 2rem; }
+}
+
+/* ==========================================================================
+   WALLAPOP-STYLE CARDS — wlp-card
+   ========================================================================== */
+
+.card-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 24px 2%;
+}
+
+.wlp-card {
+    background: var(--bg-900);
+    border: 1px solid var(--border-500);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    cursor: pointer;
+}
+.wlp-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+    border-color: var(--primary-500);
+}
+.wlp-card--vendido { opacity: 0.6; }
+.wlp-card--vendido:hover { transform: none; }
+
+/* Imagen */
+.wlp-card__link { display: block; }
+.wlp-card__img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--bg-850);
+    overflow: hidden;
+}
+.wlp-card__img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.3s ease;
+}
+.wlp-card:hover .wlp-card__img-wrap img { transform: scale(1.04); }
+
+/* Badge vendido */
+.wlp-card__badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.wlp-card__badge--vendido {
+    background: rgba(231,76,60,0.9);
+    color: #fff;
+}
+
+/* Cuerpo */
+.wlp-card__body {
+    padding: 12px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+.wlp-card__precio {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-100);
+    margin: 0;
+}
+.wlp-card__titulo {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text-200);
+    margin: 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.wlp-card__titulo a {
+    color: inherit;
+    text-decoration: none;
+}
+.wlp-card__titulo a:hover { color: var(--primary-400); }
+
+/* Meta: marca · año · km */
+.wlp-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+.wlp-card__meta span {
+    font-size: 0.78rem;
+    color: var(--text-400);
+    background: var(--bg-800);
+    border: 1px solid var(--border-500);
+    border-radius: 20px;
+    padding: 2px 8px;
+}
+
+/* Footer: ubicación + vendedor */
+.wlp-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-500);
+    gap: 8px;
+}
+.wlp-card__ubicacion {
+    font-size: 0.75rem;
+    color: var(--text-400);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.wlp-card__vendedor {
+    font-size: 0.75rem;
+    color: var(--text-500);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 45%;
+}
+
+/* Paginación */
+.paginacion-wrap {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 24px 0 8px;
+}
+.paginacion-wrap .button {
+    min-width: 200px;
+}
+
+/* Responsive cards */
+@media (max-width: 900px) {
+    .card-container { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+}
+@media (max-width: 520px) {
+    .card-container { grid-template-columns: 1fr; gap: 12px; }
+    .wlp-card__img-wrap { aspect-ratio: 16 / 9; }
 }

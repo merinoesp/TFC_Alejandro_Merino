@@ -1,5 +1,8 @@
 <?php
 session_start();
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('X-XSS-Protection: 1; mode=block');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Model/Database.php';
 
 header('Content-Type: application/json');
@@ -10,7 +13,7 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
 
-$db = new Database('localhost', 'root', '', 'car2iu', 3306);
+$db = new Database('sql210.infinityfree.com', 'if0_41267709', 'acakoj56J', 'if0_41267709_car2iu', 3306);
 
 // Verificar que es admin usando el método existente
 if (!$db->verificarAdmin($_SESSION['id'])) {
@@ -34,6 +37,11 @@ switch ($action) {
 
     case 'marcarLeido':
         $result = $db->marcarLeido($id);
+        echo json_encode(['success' => (bool)$result]);
+        break;
+
+    case 'borrarAnuncio':
+        $result = $db->borrarAnuncio($id);
         echo json_encode(['success' => (bool)$result]);
         break;
 
