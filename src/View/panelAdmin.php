@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/public/assets/css/styles.css">
@@ -8,9 +8,14 @@
 </head>
 <body>
     <?php
+    if (session_status() === PHP_SESSION_NONE) session_start();
     require_once $_SERVER['DOCUMENT_ROOT'] . '/src/View/partials/nav.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Model/Database.php';
     $db = new Database('sql210.infinityfree.com', 'if0_41267709', 'acakoj56J', 'if0_41267709_car2iu', 3306);
+    if (!isset($_SESSION['id']) || !$db->verificarAdmin($_SESSION['id'])) {
+        header('Location: /');
+        exit();
+    }
     $reportes = $db->reportes();
     ?>
     <main class="admin-panel">
@@ -33,7 +38,11 @@
                                     <button class="btn-accion btn-dropdown">⚙ Acciones ▾</button>
                                     <div class="dropdown-menu">
                                         <button onclick="borrarCuenta(<?= $reporte['id_usuario'] ?>)">🗑 Borrar Cuenta</button>
-                                        <button onclick="borrarAnuncioAdmin(<?= $reporte['id_anuncio'] ?>)">🚫 Eliminar Anuncio</button>
+                                        <?php if (!empty($reporte['id_anuncio'])): ?>
+                                        <button onclick="borrarAnuncioAdmin(<?= (int)$reporte['id_anuncio'] ?>)">🚫 Eliminar Anuncio</button>
+                                        <?php else: ?>
+                                        <button disabled style="opacity:0.4;cursor:not-allowed;">🚫 Sin anuncio</button>
+                                        <?php endif; ?>
                                         <button onclick="marcarLeido(<?= $reporte['id_reporte'] ?>)">✅ Marcar como Leído</button>
                                         <button onclick="contactar('<?= htmlspecialchars($reporte['email_reportado'], ENT_QUOTES) ?>')">✉ Contactar</button>
                                     </div>

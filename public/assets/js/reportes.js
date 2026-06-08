@@ -41,12 +41,26 @@ function marcarLeido(id_reporte) {
 }
 
 function borrarAnuncioAdmin(id_anuncio) {
-    if(confirm('¿Seguro que quieres eliminar este anuncio?')) {
+    if (!id_anuncio || id_anuncio <= 0) {
+        alert('ID de anuncio no válido.');
+        return;
+    }
+    if(confirm('¿Seguro que quieres eliminar este anuncio? Esta acción no se puede deshacer.')) {
         fetch(`/src/Controller/adminController.php?action=borrarAnuncio&id=${id_anuncio}`, { method: 'POST' })
-        .then(r => r.json())
+        .then(r => {
+            if (!r.ok) throw new Error('Error de red: ' + r.status);
+            return r.json();
+        })
         .then(data => {
-            if(data.success) location.reload();
-            else alert('Error al eliminar el anuncio');
+            if(data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el anuncio: ' + (data.error || 'Error desconocido'));
+            }
+        })
+        .catch(err => {
+            console.error('Error:', err);
+            alert('Error de conexión al intentar eliminar el anuncio. Inténtalo de nuevo.');
         });
     }
 }

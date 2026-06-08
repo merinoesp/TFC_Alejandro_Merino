@@ -1,26 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/public/assets/css/styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footer</title>
-</head>
-<body>
-    <!-- Quitar el html5 y dejar solamente el footer cuando lo pase a php -->
 <footer class="footer">
     <section class="section-f">
         <h3>Car2iu</h3>
-        <p>Compra y venta de vehiculos.</p>
+        <p>Compra y venta de vehículos en España.</p>
         <p>&copy; 2026 Todos los derechos reservados.</p>
     </section>
 
     <section class="section-f">
-        <h4>Servicios</h4>
+        <h4>Navegación</h4>
         <ul>
-            <li><a href="#">Alquiler</a></li>
-            <li><a href="#">Flotas</a></li>
-            <li><a href="#">Soporte</a></li>
+            <li><a href="/anuncios">Ver anuncios</a></li>
+            <li><a href="/crearAnuncio">Publicar vehículo</a></li>
+            <li><a href="/sobrenosotros">Sobre nosotros</a></li>
         </ul>
     </section>
 
@@ -33,5 +23,3 @@
         </address>
     </section>
 </footer>
-</body>
-</html>

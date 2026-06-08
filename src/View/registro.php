@@ -24,6 +24,10 @@
                 <label for="password">Contraseña:</label>
                 <input type="password" name="password" id="password" required>
 
+                <label for="password_repeat">Repetir contraseña:</label>
+                <input type="password" name="password_repeat" id="password_repeat" required>
+                <span id="password-match-msg" style="font-size:0.85em; display:none;"></span>
+
                 <label for="telefono">Teléfono:</label>
                 <input type="tel" name="telefono" id="telefono">
 

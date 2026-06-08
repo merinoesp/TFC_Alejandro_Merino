@@ -41,6 +41,10 @@ switch ($action) {
         break;
 
     case 'borrarAnuncio':
+        if ($id <= 0) {
+            echo json_encode(['success' => false, 'error' => 'ID de anuncio no válido']);
+            break;
+        }
         $result = $db->eliminarAnuncio($id);
         echo json_encode(['success' => (bool)$result]);
         break;

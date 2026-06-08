@@ -8,6 +8,11 @@
 </head>
 <body>
     <?php
+    if (session_status() === PHP_SESSION_NONE) session_start();
+    if (!isset($_SESSION['id'])) {
+        header('Location: /login');
+        exit();
+    }
     require_once $_SERVER['DOCUMENT_ROOT'] . '/src/View/partials/nav.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Model/Database.php';
     $db = new Database('sql210.infinityfree.com', 'if0_41267709', 'acakoj56J', 'if0_41267709_car2iu', 3306);
