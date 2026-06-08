@@ -44,7 +44,7 @@
                                         <button disabled style="opacity:0.4;cursor:not-allowed;">🚫 Sin anuncio</button>
                                         <?php endif; ?>
                                         <button onclick="marcarLeido(<?= $reporte['id_reporte'] ?>)">✅ Marcar como Leído</button>
-                                        <button onclick="contactar('<?= htmlspecialchars($reporte['email_reportado'], ENT_QUOTES) ?>')">✉ Contactar</button>
+                                        <button onclick="contactarAdmin(<?= (int)$reporte['id_usuario'] ?>, <?= $reporte['id_anuncio'] ? (int)$reporte['id_anuncio'] : 'null' ?>)">✉ Contactar</button>
                                     </div>
                                 </div>
                             </div>
@@ -57,19 +57,25 @@
         </section>
     </main>
 
-    <!-- Modal Contactar -->
-    <div id="modalContactar" class="modal-contactar-overlay" style="display:none;">
-        <div class="modal-contactar-box">
-            <h3>📧 Email del usuario reportado</h3>
-            <p id="emailContactar" class="email-display"></p>
-            <div class="modal-contactar-btns">
-                <button id="btnCopiar" class="btn-accion btn-dropdown" onclick="copiarEmail()">📋 Copiar</button>
-                <button class="btn-accion" onclick="cerrarModalContactar()" style="background:#666;">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/src/View/partials/footer.php'; ?>
     <script src="/public/assets/js/reportes.js"></script>
+    <script>
+    async function contactarAdmin(idUsuario, idAnuncio) {
+        const fd = new FormData();
+        fd.append('id_otro', idUsuario);
+        if (idAnuncio) fd.append('id_anuncio', idAnuncio);
+        try {
+            const res  = await fetch('/src/Controller/chatController.php?action=iniciar', { method:'POST', body: fd });
+            const data = await res.json();
+            if (data.success) {
+                window.location.href = '/chats?id=' + data.id_chat;
+            } else {
+                alert('Error al abrir el chat: ' + (data.error || ''));
+            }
+        } catch(e) {
+            alert('Error de conexión');
+        }
+    }
+    </script>
 </body>
 </html>

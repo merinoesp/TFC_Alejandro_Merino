@@ -27,6 +27,7 @@
             <a href="/cerrarSesion">Cerrar Sesión</a>
             <a href="/userPanel">Panel de Usuario</a>
             <a href="/anuncios">Anuncios</a>
+            <a href="/chats">Mensajes</a>
             <a href="/src/Model/IA/index.php">IA</a>
             <a href="/panelAdmin">Panel de Administrador</a>
         </div>';
@@ -36,6 +37,7 @@
             <a href="/cerrarSesion">Cerrar Sesión</a>
             <a href="/userPanel">Panel de Usuario</a>
             <a href="/anuncios">Anuncios</a>
+            <a href="/chats">Mensajes</a>
             <a href="/src/Model/IA/index.php">IA</a>
             <a href="/crearAnuncio"><button class="button button-primary">Subir +</button></a>
         </div>';
@@ -44,7 +46,7 @@
             echo '<div class="list-elements">
             <a href="/index.php">Inicio</a>
             <a href="/login">Iniciar Sesión</a>
-            <a href="#">Sobre Nosotros</a>
+            <a href="/sobrenosotros.php">Sobre Nosotros</a>
             <a href="/anuncios">Anuncios</a>
            
         </div>';

@@ -55,7 +55,9 @@
                     <span class="vendido-badge">Vendido</span>
                 <?php else: ?>
                     <?php if ($estaLogueado && !$esPropietario): ?>
-                        <button class="button button-primary contactar">Contactar</button>
+                        <button class="button button-primary" id="btnContactar" onclick="iniciarChat()">
+                            💬 Contactar al vendedor
+                        </button>
                     <?php elseif (!$estaLogueado): ?>
                         <a href="/login"><button class="button button-primary">Inicia sesión para contactar</button></a>
                     <?php endif; ?>
@@ -96,5 +98,32 @@
     </main>
 
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/src/View/partials/footer.php'; ?>
+    <?php if ($estaLogueado && !$esPropietario): ?>
+    <script>
+    async function iniciarChat() {
+        const btn = document.getElementById('btnContactar');
+        btn.disabled = true;
+        btn.textContent = 'Abriendo chat…';
+        const fd = new FormData();
+        fd.append('id_otro',    <?= (int)$anuncio['id_usuario'] ?>);
+        fd.append('id_anuncio', <?= (int)$anuncio['id_anuncio'] ?>);
+        try {
+            const res  = await fetch('/src/Controller/chatController.php?action=iniciar', { method:'POST', body: fd });
+            const data = await res.json();
+            if (data.success) {
+                window.location.href = '/chats?id=' + data.id_chat;
+            } else {
+                alert('Error al abrir el chat: ' + (data.error || ''));
+                btn.disabled = false;
+                btn.textContent = '💬 Contactar al vendedor';
+            }
+        } catch(e) {
+            alert('Error de conexión');
+            btn.disabled = false;
+            btn.textContent = '💬 Contactar al vendedor';
+        }
+    }
+    </script>
+    <?php endif; ?>
 </body>
 </html>

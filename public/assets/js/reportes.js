@@ -65,28 +65,7 @@ function borrarAnuncioAdmin(id_anuncio) {
     }
 }
 
-// ── Modal Contactar ─────────────────────────────────────────────────────────
-function contactar(email) {
-    const modal = document.getElementById('modalContactar');
-    document.getElementById('emailContactar').textContent = email;
-    modal.style.display = 'flex';
-}
-
-function cerrarModalContactar() {
-    document.getElementById('modalContactar').style.display = 'none';
-}
-
-function copiarEmail() {
-    const email = document.getElementById('emailContactar').textContent;
-    navigator.clipboard.writeText(email).then(() => {
-        const btn = document.getElementById('btnCopiar');
-        btn.textContent = '✅ Copiado';
-        setTimeout(() => { btn.textContent = '📋 Copiar'; }, 2000);
-    });
-}
-
-// Cerrar modal al pulsar fuera
+// Cerrar dropdown al pulsar fuera
 window.addEventListener('click', function(e) {
-    const modal = document.getElementById('modalContactar');
-    if (e.target === modal) cerrarModalContactar();
+    document.querySelectorAll('.dropdown-menu.open').forEach(m => m.classList.remove('open'));
 });

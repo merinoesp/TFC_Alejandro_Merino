@@ -488,3 +488,124 @@ public function marcarLeido($id_reporte){
 }
 
 ?>
+    // ================================================================
+    // CHAT
+    // ================================================================
+
+    /**
+     * Obtiene o crea un chat entre dos usuarios, opcionalmente ligado a un anuncio.
+     * Garantiza que id_usuario_1 < id_usuario_2 para no duplicar.
+     */
+    public function obtenerOCrearChat(int $uid1, int $uid2, ?int $idAnuncio = null): ?int {
+        $conn = $this->dbConnect();
+        if (!$conn) return null;
+
+        // normalizar orden
+        [$a, $b] = $uid1 < $uid2 ? [$uid1, $uid2] : [$uid2, $uid1];
+
+        // buscar existente
+        if ($idAnuncio) {
+            $sql = "SELECT id_chat FROM chats WHERE id_usuario_1=? AND id_usuario_2=? AND id_anuncio=? LIMIT 1";
+            $st  = $conn->prepare($sql);
+            $st->bind_param('iii', $a, $b, $idAnuncio);
+        } else {
+            $sql = "SELECT id_chat FROM chats WHERE id_usuario_1=? AND id_usuario_2=? AND id_anuncio IS NULL LIMIT 1";
+            $st  = $conn->prepare($sql);
+            $st->bind_param('ii', $a, $b);
+        }
+        $st->execute();
+        $res = $st->get_result();
+        if ($row = $res->fetch_assoc()) return (int)$row['id_chat'];
+
+        // crear nuevo
+        if ($idAnuncio) {
+            $ins = $conn->prepare("INSERT INTO chats (id_usuario_1, id_usuario_2, id_anuncio) VALUES (?,?,?)");
+            $ins->bind_param('iii', $a, $b, $idAnuncio);
+        } else {
+            $ins = $conn->prepare("INSERT INTO chats (id_usuario_1, id_usuario_2) VALUES (?,?)");
+            $ins->bind_param('ii', $a, $b);
+        }
+        $ins->execute();
+        return (int)$conn->insert_id;
+    }
+
+    /** Devuelve todos los chats de un usuario con datos del interlocutor y último mensaje */
+    public function listarChatsUsuario(int $uid): array {
+        $conn = $this->dbConnect();
+        if (!$conn) return [];
+        $sql = "
+            SELECT c.id_chat, c.id_anuncio,
+                   CASE WHEN c.id_usuario_1 = ? THEN c.id_usuario_2 ELSE c.id_usuario_1 END AS id_otro,
+                   u.nombre  AS nombre_otro,
+                   u.avatar_ruta AS avatar_otro,
+                   a.titulo  AS titulo_anuncio,
+                   (SELECT contenido  FROM mensajes WHERE id_chat=c.id_chat ORDER BY enviado_en DESC LIMIT 1) AS ultimo_msg,
+                   (SELECT enviado_en FROM mensajes WHERE id_chat=c.id_chat ORDER BY enviado_en DESC LIMIT 1) AS ultimo_ts,
+                   (SELECT COUNT(*)   FROM mensajes WHERE id_chat=c.id_chat AND id_emisor<>? AND leido=0) AS no_leidos
+            FROM chats c
+            JOIN usuarios u ON u.id_usuario = CASE WHEN c.id_usuario_1=? THEN c.id_usuario_2 ELSE c.id_usuario_1 END
+            LEFT JOIN anuncios a ON a.id_anuncio = c.id_anuncio
+            WHERE c.id_usuario_1=? OR c.id_usuario_2=?
+            ORDER BY ultimo_ts DESC
+        ";
+        $st = $conn->prepare($sql);
+        $st->bind_param('iiiii', $uid, $uid, $uid, $uid, $uid);
+        $st->execute();
+        return $st->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    /** Devuelve los mensajes de un chat (máx 100 últimos) */
+    public function mensajesChat(int $idChat, int $uid): array {
+        $conn = $this->dbConnect();
+        if (!$conn) return [];
+        // marcar como leídos los del interlocutor
+        $upd = $conn->prepare("UPDATE mensajes SET leido=1 WHERE id_chat=? AND id_emisor<>?");
+        $upd->bind_param('ii', $idChat, $uid);
+        $upd->execute();
+
+        $sql = "SELECT m.id_mensaje, m.id_emisor, m.contenido, m.enviado_en, m.leido,
+                       u.nombre AS nombre_emisor, u.avatar_ruta
+                FROM mensajes m
+                JOIN usuarios u ON u.id_usuario = m.id_emisor
+                WHERE m.id_chat = ?
+                ORDER BY m.enviado_en ASC
+                LIMIT 100";
+        $st = $conn->prepare($sql);
+        $st->bind_param('i', $idChat);
+        $st->execute();
+        return $st->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    /** Envía un mensaje */
+    public function enviarMensaje(int $idChat, int $idEmisor, string $contenido): bool {
+        $conn = $this->dbConnect();
+        if (!$conn) return false;
+        // Verificar que el emisor pertenece al chat
+        $check = $conn->prepare("SELECT id_chat FROM chats WHERE id_chat=? AND (id_usuario_1=? OR id_usuario_2=?)");
+        $check->bind_param('iii', $idChat, $idEmisor, $idEmisor);
+        $check->execute();
+        if ($check->get_result()->num_rows === 0) return false;
+
+        $st = $conn->prepare("INSERT INTO mensajes (id_chat, id_emisor, contenido) VALUES (?,?,?)");
+        $st->bind_param('iis', $idChat, $idEmisor, $contenido);
+        return $st->execute();
+    }
+
+    /** Info básica de un chat (para verificar acceso) */
+    public function infoChat(int $idChat, int $uid): ?array {
+        $conn = $this->dbConnect();
+        if (!$conn) return null;
+        $st = $conn->prepare("
+            SELECT c.*, a.titulo AS titulo_anuncio,
+                   CASE WHEN c.id_usuario_1=? THEN c.id_usuario_2 ELSE c.id_usuario_1 END AS id_otro,
+                   u.nombre AS nombre_otro, u.avatar_ruta AS avatar_otro
+            FROM chats c
+            LEFT JOIN anuncios a ON a.id_anuncio = c.id_anuncio
+            JOIN usuarios u ON u.id_usuario = CASE WHEN c.id_usuario_1=? THEN c.id_usuario_2 ELSE c.id_usuario_1 END
+            WHERE c.id_chat=? AND (c.id_usuario_1=? OR c.id_usuario_2=?)
+        ");
+        $st->bind_param('iiiii', $uid, $uid, $idChat, $uid, $uid);
+        $st->execute();
+        $row = $st->get_result()->fetch_assoc();
+        return $row ?: null;
+    }

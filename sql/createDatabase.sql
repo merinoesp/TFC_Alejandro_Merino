@@ -95,3 +95,42 @@ ALTER TABLE `anuncios`  MODIFY `id_anuncio`  INT(11) NOT NULL AUTO_INCREMENT, AU
 ALTER TABLE `reportes`  MODIFY `id_reporte`  INT(11) NOT NULL AUTO_INCREMENT;
 
 COMMIT;
+
+-- ============================================================
+-- Tabla: chats (conversaciones entre dos usuarios)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS `chats` (
+  `id_chat`        INT(11)   NOT NULL AUTO_INCREMENT,
+  `id_usuario_1`   INT(11)   NOT NULL,
+  `id_usuario_2`   INT(11)   NOT NULL,
+  `id_anuncio`     INT(11)   DEFAULT NULL,
+  `creado_en`      DATETIME  DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_chat`),
+  UNIQUE KEY `uq_chat` (`id_usuario_1`, `id_usuario_2`, `id_anuncio`),
+  KEY `id_usuario_1` (`id_usuario_1`),
+  KEY `id_usuario_2` (`id_usuario_2`),
+  KEY `id_anuncio`   (`id_anuncio`),
+  CONSTRAINT `chats_ibfk_1` FOREIGN KEY (`id_usuario_1`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE,
+  CONSTRAINT `chats_ibfk_2` FOREIGN KEY (`id_usuario_2`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE,
+  CONSTRAINT `chats_ibfk_3` FOREIGN KEY (`id_anuncio`)   REFERENCES `anuncios` (`id_anuncio`)  ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Tabla: mensajes
+-- ============================================================
+CREATE TABLE IF NOT EXISTS `mensajes` (
+  `id_mensaje`   INT(11)   NOT NULL AUTO_INCREMENT,
+  `id_chat`      INT(11)   NOT NULL,
+  `id_emisor`    INT(11)   NOT NULL,
+  `contenido`    TEXT      NOT NULL,
+  `enviado_en`   DATETIME  DEFAULT CURRENT_TIMESTAMP,
+  `leido`        TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id_mensaje`),
+  KEY `id_chat`   (`id_chat`),
+  KEY `id_emisor` (`id_emisor`),
+  CONSTRAINT `mensajes_ibfk_1` FOREIGN KEY (`id_chat`)   REFERENCES `chats`    (`id_chat`)    ON DELETE CASCADE,
+  CONSTRAINT `mensajes_ibfk_2` FOREIGN KEY (`id_emisor`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `chats`    MODIFY `id_chat`    INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `mensajes` MODIFY `id_mensaje` INT(11) NOT NULL AUTO_INCREMENT;
