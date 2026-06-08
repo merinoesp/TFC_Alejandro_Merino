@@ -366,8 +366,9 @@ public function eliminarAnuncio($id){
     $sql = "DELETE FROM anuncios WHERE id_anuncio = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $id);
-    $stmt->execute();
+    $result = $stmt->execute();
     $stmt->close();
+    return $result;
 }
 
 public function venta($id){

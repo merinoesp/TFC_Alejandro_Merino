@@ -41,7 +41,7 @@ switch ($action) {
         break;
 
     case 'borrarAnuncio':
-        $result = $db->borrarAnuncio($id);
+        $result = $db->eliminarAnuncio($id);
         echo json_encode(['success' => (bool)$result]);
         break;
 
