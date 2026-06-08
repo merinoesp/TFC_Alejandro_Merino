@@ -1,0 +1,8 @@
+
+chatBox.innerHTML += `<div class="m-container">
+                    <p>${mensajeEnviado.value}</p>
+                </div>`;
+
+        chatBox.innerHTML += `<div class="m-container-ia">
+                 <p>${respuestaRecibida}</p>
+                </div>`;

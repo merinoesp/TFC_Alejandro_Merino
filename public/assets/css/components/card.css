@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700&family=Urbanist:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('/public/assets/css/components/buttons.css');
+
+:root {
+    --bg-950: #0B0F14;
+    --bg-900: #0E1116;
+    --bg-850: #131722;
+    --bg-800: #161B26;
+    --bg-750: #1A2030;
+    --bg-600: #1F2635;
+
+    --surface-700: #1C2230;
+    --surface-650: #20283A;
+    --surface-600: #232A3A;
+    --surface-550: #273046;
+
+    --border-500: #2E364A;
+    --border-400: #3A445C;
+    --border-300: #46526E;
+
+    --text-100: #FFFFFF;
+    --text-200: #E6EAF2;
+    --text-300: #B8C1D9;
+    --text-400: #8A94AD;
+    --text-500: #5E6885;
+
+    --primary-50: #F3F4FF;
+    --primary-100: #E0E3FF;
+    --primary-200: #C2C8FF;
+    --primary-300: #9FA8FF;
+    --primary-400: #7C88FF;
+    --primary-500: #5B6CFF;
+    --primary-600: #4756E6;
+    --primary-700: #3845B8;
+    --primary-800: #2A348A;
+    --primary-900: #1D255F;
+
+    --secondary-50: #F0FDFA;
+    --secondary-100: #CCFBF1;
+    --secondary-200: #99F6E4;
+    --secondary-300: #5EEAD4;
+    --secondary-400: #2DD4BF;
+    --secondary-500: #14B8A6;
+    --secondary-600: #0D9488;
+    --secondary-700: #0F766E;
+    --secondary-800: #115E59;
+    --secondary-900: #134E4A;
+
+    --accent-pink: #FF4D9D;
+    --accent-orange: #FF8A3D;
+    --accent-yellow: #FFC857;
+    --accent-lime: #A3E635;
+
+    --success-500: #22C55E;
+    --warning-500: #F59E0B;
+    --error-500: #EF4444;
+    --info-500: #3B82F6;
+
+    --overlay-light: rgba(255, 255, 255, 0.04);
+    --overlay-medium: rgba(255, 255, 255, 0.08);
+    --overlay-strong: rgba(255, 255, 255, 0.12);
+
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.45);
+
+    --font-primary: 'Poppins', sans-serif;
+    --font-alt-1: 'Montserrat', sans-serif;
+    --font-alt-2: 'Urbanist', sans-serif;
+    --font-alt-3: 'Plus Jakarta Sans', sans-serif;
+
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1%;
+    flex-wrap: wrap;
+    width: 15%;
+    text-align: center;
+    height: 400px;
+    border: 2px solid var(--border-300);
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+    background-image: linear-gradient(to bottom, var(--bg-800), var(--bg-750));
+}
+
+.card p {
+    color: white;
+    font-family: var(--font-alt-1);
+}
+
+.card:hover {
+    transform: scale(1.02);
+    border-color: #0D9488;
+}
+
+.card img {
+    margin-top: 20px;
+    height: 100px;
+    width: 200px;
+}
+
+@media (max-width: 1200px) {
+    .card {
+        width: 30%;
+        height: auto;
+        min-height: 380px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 45%;
+        height: auto;
+        padding: 20px;
+    }
+    
+    .card img {
+        width: 100%;
+        height: auto;
+        max-height: 150px;
+        object-fit: cover;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    .card:hover {
+        transform: none;
+    }
+}

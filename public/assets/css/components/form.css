@@ -1,0 +1,59 @@
+/* form.css — estilos de grupos de formulario */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    font-family: var(--font-primary);
+}
+
+.form-group label {
+    color: var(--text-300);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    background-color: var(--surface-600);
+    color: var(--text-100);
+    border: 1.5px solid var(--border-500);
+    border-radius: 0.5rem;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease-in-out;
+    width: 100%;
+    font-family: var(--font-alt-3);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary-500);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(91, 108, 255, 0.2);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled,
+.form-group select:disabled {
+    background-color: var(--surface-700);
+    color: var(--text-400);
+    cursor: not-allowed;
+}
+
+.form-group .form-error {
+    color: var(--error-500);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.form-group .form-help {
+    color: var(--text-400);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}

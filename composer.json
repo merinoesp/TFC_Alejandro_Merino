@@ -1,0 +1,15 @@
+{
+    "name": "merino/htdocs",
+    "autoload": {
+        "psr-4": {
+            "Merino\\Htdocs\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "merinoesp",
+            "email": "167458355+merinoesp@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}

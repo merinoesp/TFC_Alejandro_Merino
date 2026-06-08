@@ -1,0 +1,23 @@
+/* gen.css — estilos generales de apoyo */
+
+.subtitle {
+    color: var(--text-100);
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    font-family: var(--font-primary), sans-serif;
+    font-weight: 600;
+    margin: 0;
+}
+
+.vendido-badge {
+    background-color: var(--success-500);
+    color: white;
+    padding: 4px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    width: 100%;
+    opacity: 0.5;
+}
+.vendido-badge span{
+    opacity: 1;
+}

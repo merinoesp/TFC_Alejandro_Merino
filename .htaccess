@@ -1,0 +1,22 @@
+RewriteEngine On
+
+# 1. Si el archivo/carpeta existe tal cual en la raíz → sírvelo
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 2. Intenta en src/View/ con .php
+RewriteCond %{DOCUMENT_ROOT}/src/View%{REQUEST_URI}.php -f
+RewriteRule ^(.*)$ src/View/$1.php [L,QSA]
+
+# 3. Intenta en src/View/ tal cual (carpeta o archivo con extensión ya puesta)
+RewriteCond %{DOCUMENT_ROOT}/src/View%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}/src/View%{REQUEST_URI} -d
+RewriteRule ^(.*)$ src/View/$1 [L,QSA]
+
+# 4. Intenta en src/Controller/ con .php
+RewriteCond %{DOCUMENT_ROOT}/src/Controller%{REQUEST_URI}.php -f
+RewriteRule ^(.*)$ src/Controller/$1.php [L,QSA]
+
+# 5. Nada encontrado → index.php
+RewriteRule ^ index.php [L,QSA]

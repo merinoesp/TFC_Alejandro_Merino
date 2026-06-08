@@ -1,0 +1,99 @@
+/* buttons.css — sistema de botones */
+
+.button {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--border-radius-md, 0.5rem);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    text-align: center;
+    color: var(--text-100);
+}
+
+/* Primario */
+.button-primary {
+    background-color: var(--primary-500);
+    color: var(--text-100);
+}
+.button-primary:hover  { background-color: var(--primary-600); }
+.button-primary:active { background-color: var(--primary-700); }
+.button-primary:disabled { background-color: var(--primary-300); cursor: not-allowed; opacity: 0.7; }
+
+/* Secundario — tono oscuro/neutro coherente con el diseño */
+.button-secondary {
+    background-color: var(--surface-600);
+    color: var(--text-200);
+    border: 1px solid var(--border-400);
+}
+.button-secondary:hover  { background-color: var(--border-500); color: var(--text-100); }
+.button-secondary:active { background-color: var(--border-400); }
+.button-secondary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Peligro */
+.button-danger, .btn-danger {
+    background-color: var(--error-500);
+    color: var(--text-100);
+}
+.button-danger:hover, .btn-danger:hover { background-color: #dc2626; }
+
+/* Éxito */
+.button-success, .btn-success {
+    background-color: var(--success-500);
+    color: var(--text-100);
+}
+
+/* Outline */
+.button-outline {
+    background-color: transparent;
+    color: var(--primary-500);
+    border: 2px solid var(--primary-500);
+}
+.button-outline:hover {
+    background-color: var(--primary-500);
+    color: var(--text-100);
+}
+
+/* Ghost */
+.button-ghost {
+    background-color: transparent;
+    color: var(--text-200);
+    border: none;
+}
+.button-ghost:hover  { color: var(--text-100); background-color: var(--overlay-light, rgba(255,255,255,0.04)); }
+.button-ghost:active { background-color: var(--overlay-medium, rgba(255,255,255,0.08)); }
+
+/* Icon (circular) */
+.button-icon {
+    background-color: var(--primary-500);
+    color: var(--text-100);
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    padding: 0;
+}
+.button-icon:hover { background-color: var(--primary-600); }
+
+/* Link */
+.button-link {
+    background-color: transparent;
+    color: var(--primary-500);
+    text-decoration: underline;
+    padding: 0;
+    border: none;
+}
+.button-link:hover { color: var(--primary-600); }
+
+/* Accent */
+.button-accent {
+    background-color: var(--accent-lime);
+    color: #0B0F14;
+}
+.button-accent:hover { background-color: #8dcc27; }
