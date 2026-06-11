@@ -37,14 +37,14 @@
                                 <div class="dropdown">
                                     <button class="btn-accion btn-dropdown">⚙ Acciones ▾</button>
                                     <div class="dropdown-menu">
-                                        <button onclick="borrarCuenta(<?= $reporte['id_usuario'] ?>)">🗑 Borrar Cuenta</button>
+                                        <button data-action="borrar-cuenta" data-id="<?= $reporte['id_usuario'] ?>">🗑 Borrar Cuenta</button>
                                         <?php if (!empty($reporte['id_anuncio'])): ?>
-                                        <button onclick="borrarAnuncioAdmin(<?= (int)$reporte['id_anuncio'] ?>)">🚫 Eliminar Anuncio</button>
+                                        <button data-action="borrar-anuncio" data-id="<?= $reporte['id_usuario'] ?>" data-anuncio-id="<?= (int)$reporte['id_anuncio'] ?>">🚫 Eliminar Anuncio</button>
                                         <?php else: ?>
                                         <button disabled style="opacity:0.4;cursor:not-allowed;">🚫 Sin anuncio</button>
                                         <?php endif; ?>
-                                        <button onclick="marcarLeido(<?= $reporte['id_reporte'] ?>)">✅ Marcar como Leído</button>
-                                        <button onclick="contactarAdmin(<?= (int)$reporte['id_usuario'] ?>, <?= $reporte['id_anuncio'] ? (int)$reporte['id_anuncio'] : 'null' ?>)">✉ Contactar</button>
+                                        <button data-action="marcar-leido" data-id="<?= $reporte['id_reporte'] ?>">✅ Marcar como Leído</button>
+                                        <button data-action="contactar-admin" data-id="<?= (int)$reporte['id_usuario'] ?>" data-anuncio-id="<?= $reporte['id_anuncio'] ? (int)$reporte['id_anuncio'] : 'null' ?>">✉ Contactar</button>
                                     </div>
                                 </div>
                             </div>
@@ -58,24 +58,7 @@
     </main>
 
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/src/View/partials/footer.php'; ?>
-    <script src="/public/assets/js/reportes.js"></script>
-    <script>
-    async function contactarAdmin(idUsuario, idAnuncio) {
-        const fd = new FormData();
-        fd.append('id_otro', idUsuario);
-        if (idAnuncio) fd.append('id_anuncio', idAnuncio);
-        try {
-            const res  = await fetch('/src/Controller/chatController.php?action=iniciar', { method:'POST', body: fd });
-            const data = await res.json();
-            if (data.success) {
-                window.location.href = '/chats?id=' + data.id_chat;
-            } else {
-                alert('Error al abrir el chat: ' + (data.error || ''));
-            }
-        } catch(e) {
-            alert('Error de conexión');
-        }
-    }
-    </script>
+    <script defer src="/public/assets/js/reportes.js"></script>
+    <script defer src="/public/assets/js/panelAdmin.js"></script>
 </body>
 </html>

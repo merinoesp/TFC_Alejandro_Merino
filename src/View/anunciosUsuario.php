@@ -46,7 +46,7 @@
                                     </a>
                                 </div>
                                 <div class="anuncio-vendedor">
-                                    ' . ($anuncio['vendido'] == 1 ? '<span class="vendido-badge">Ya vendido</span>' : '<button class="button button-success" data-id="' . (int)$anuncio['id_anuncio'] . '" onclick="marcarVendido(this)">Vendido</button>') . '
+                                    ' . ($anuncio['vendido'] == 1 ? '<span class="vendido-badge">Ya vendido</span>' : '<button class="button button-success" data-action="vendido" data-id="' . (int)$anuncio['id_anuncio'] . '">Vendido</button>') . '
                                     <button class="button button-danger btn-eliminar" data-id="' . (int)$anuncio['id_anuncio'] . '">Eliminar</button>
                                 </div>
                             </section>
@@ -63,19 +63,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modalTitle">Confirmación</h2>
-                <span class="modal-close" onclick="cerrarModal()">&times;</span>
+                <span class="modal-close" data-action="cerrar-modal">&times;</span>
             </div>
             <div class="modal-body">
                 <p id="modalMessage">¿Estás seguro?</p>
             </div>
             <div class="modal-footer">
-                <button class="button button-secondary" onclick="cerrarModal()">Cancelar</button>
-                <button class="button button-danger" id="modalConfirmBtn" onclick="confirmarAccion()">Confirmar</button>
+                <button class="button button-secondary" data-action="cerrar-modal">Cancelar</button>
+                <button class="button button-danger" id="modalConfirmBtn" data-action="confirmar-accion">Confirmar</button>
             </div>
         </div>
     </div>
     
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/src/View/partials/footer.php'; ?>
-    <script src="/public/assets/js/borrarAnuncio.js"></script>
+    <script defer src="/public/assets/js/borrarAnuncio.js"></script>
+    <script defer src="/public/assets/js/anunciosUsuario.js"></script>
 </body>
 </html>
