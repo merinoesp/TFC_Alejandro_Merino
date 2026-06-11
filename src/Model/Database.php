@@ -485,9 +485,6 @@ public function marcarLeido($id_reporte){
     return $result;
 }
 
-}
-
-?>
     // ================================================================
     // CHAT
     // ================================================================
@@ -609,3 +606,5 @@ public function marcarLeido($id_reporte){
         $row = $st->get_result()->fetch_assoc();
         return $row ?: null;
     }
+
+}
